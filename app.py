@@ -4,7 +4,7 @@ from flask import Flask
 from flask import request
 
 from models.items_to_split import ItemsToSplit, Bill
-from utils.split_bills import split_bill
+from utils.split_bills import BillSplitterService
 
 app: Flask = Flask(__name__)
 
@@ -14,7 +14,7 @@ def bill_splitter() -> Dict[str, Any]:
     raw_data: bytes = request.data
     items_dict: Dict[List[Dict[str, Any]]] = json.loads(raw_data)
     items_to_split: ItemsToSplit = ItemsToSplit.parse_obj(items_dict)
-    bill: Bill = split_bill(items_to_split)
+    bill: Bill = BillSplitterService.split_bill(items_to_split)
 
     return bill.dict()
 
